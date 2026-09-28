@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="医学学术会议覆盖查询看板" />
+    <meta name="theme-color" content="#102b3f" />
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23102b3f'/%3E%3Cpath d='M8 10h16v14H8z' fill='none' stroke='%23ffffff' stroke-width='2'/%3E%3Cpath d='M8 14h16M12 7v6M20 7v6' stroke='%2354c5c7' stroke-width='2'/%3E%3Ccircle cx='13' cy='19' r='2' fill='%23f0b44c'/%3E%3C/svg%3E" />
+    <title>学术会议覆盖看板</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></div>
+      <div>
+        <h1>学术会议覆盖看板</h1>
+        <p>会议与客户触达查询</p>
+      </div>
+      <div class="data-period" id="dataPeriod">2026 年</div>
+    </header>
+
+    <main>
+      <section class="filter-panel" aria-labelledby="filterTitle">
+        <div class="section-heading">
+          <div>
+            <span class="eyebrow">会议查询</span>
+            <h2 id="filterTitle">筛选客户会议</h2>
+          </div>
+          <button class="text-button" id="resetButton" type="button">清除筛选</button>
+        </div>
+
+        <form id="filterForm" class="filter-grid">
+          <label class="field-customer">
+            <span>客户</span>
+            <input id="customerFilter" name="customer" list="customerList" placeholder="输入或选择客户" autocomplete="off" />
+            <datalist id="customerList"></datalist>
+          </label>
+          <label>
+            <span>月份</span>
+            <select id="monthFilter" name="month">
+              <option value="">全部月份</option>
+            </select>
+          </label>
+          <label>
+            <span>产品</span>
+            <select id="productFilter" name="product">
+              <option value="">全部产品</option>
+            </select>
+          </label>
+          <label class="field-meeting">
+            <span>会议名称</span>
+            <select id="meetingFilter" name="meeting">
+              <option value="">全部会议</option>
+            </select>
+          </label>
+          <button class="primary-button" type="submit">查询客户</button>
+        </form>
+      </section>
+
+      <section class="metric-grid" aria-label="筛选结果摘要">
+        <article class="metric-card metric-primary"><span>覆盖客户</span><strong id="customerCount">—</strong></article>
+        <article class="metric-card"><span>会议场次</span><strong id="meetingCount">—</strong></article>
+        <article class="metric-card"><span>参与记录</span><strong id="recordCount">—</strong></article>
+        <article class="metric-card"><span>负责 TAM</span><strong id="tamCount">—</strong></article>
+      </section>
+
+      <section class="results-section" aria-labelledby="resultsTitle">
+        <div class="results-heading">
+          <div>
+            <span class="eyebrow">查询结果</span>
+            <h2 id="resultsTitle">客户覆盖</h2>
+          </div>
+          <p id="resultSummary" aria-live="polite"></p>
+        </div>
+        <div id="activeFilters" class="active-filters" aria-live="polite"></div>
+        <div id="resultList" class="result-list"></div>
+        <div id="emptyState" class="empty-state" hidden>
+          <strong>未找到符合条件的客户</strong>
+          <span>请调整客户、月份、产品或会议名称后重试。</span>
+        </div>
+        <div class="load-more-wrap">
+          <button id="loadMoreButton" class="secondary-button" type="button" hidden>加载更多客户</button>
+        </div>
+      </section>
+      <p class="source-note" id="sourceNote">数据源：2026-Q1 会议覆盖明细。结果按客户聚合，会议场次按“时间 + 会议名称 + 产品”去重。</p>
+    </main>
+
+    <div class="status-toast" id="statusToast" role="status" aria-live="polite" hidden></div>
+
+    <template id="customerTemplate">
+      <article class="customer-card">
+        <details>
+          <summary>
+            <div class="customer-avatar" aria-hidden="true"></div>
+            <div class="customer-main">
+              <div class="customer-title-row">
+                <h3></h3>
+              </div>
+              <div class="customer-meta"></div>
+            </div>
+            <span class="detail-action">查看会议</span>
+          </summary>
+          <div class="customer-detail">
+            <div class="role-summary"></div>
+            <div class="meeting-table" role="table" aria-label="客户参会明细">
+              <div class="meeting-row meeting-header" role="row">
+                <span role="columnheader">时间</span>
+                <span role="columnheader">会议名称</span>
+                <span role="columnheader">产品</span>
+                <span role="columnheader">治疗组</span>
+                <span role="columnheader">角色</span>
+                <span role="columnheader">负责 TAM</span>
+                <span role="columnheader">讲课费</span>
+              </div>
+              <div class="meeting-body"></div>
+            </div>
+          </div>
+        </details>
+      </article>
+    </template>
+
+    <script src="./data.js"></script>
+    <script src="./app.js"></script>
+  </body>
+</html>
